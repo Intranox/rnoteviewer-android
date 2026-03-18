@@ -29,7 +29,9 @@ jobs:
 
       # ── 4. Build release APK ─────────────────────────────────────────
       - name: Build release APK
-        run: ./gradlew assembleRelease
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleRelease
 
       # ── 5. Sign APK (opzionale) ───────────────────────────────────────
       # Se i secrets non sono configurati questo passo viene saltato.
