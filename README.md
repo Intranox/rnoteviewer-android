@@ -1,7 +1,7 @@
 # Rnote Viewer for Android
 
 Android viewer for `.rnote` files (from the open-source application
-Rnote).
+[Rnote](https://github.com/flxzt/rnote)).
 
 > ⚠️ **Disclaimer**\
 > This is a very basic and experimental project. It is unstable,
@@ -12,9 +12,7 @@ Rnote).
 
 ## 📸 Screenshot
 
-![Screenshot](./screenshots/your-image.png)
-
-> Replace the path above with the raw GitHub URL of your screenshot.
+<img src="https://raw.githubusercontent.com/Intranox/rnoteviewer-android/refs/heads/main/screenshot/screen01.jpg" width="300"/>
 
 ------------------------------------------------------------------------
 
