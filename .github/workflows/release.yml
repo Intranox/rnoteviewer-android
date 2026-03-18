@@ -38,7 +38,7 @@ jobs:
       #   KEY_PASSWORD     → password della chiave
       #   STORE_PASSWORD   → password del keystore
       - name: Sign APK
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        if: ${{ secrets.KEYSTORE_BASE64 != null }}
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEY_ALIAS:       ${{ secrets.KEY_ALIAS }}
