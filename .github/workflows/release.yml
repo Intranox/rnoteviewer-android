@@ -23,18 +23,33 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # ── 3. Gradle ────────────────────────────────────────────────────
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v3
-
-      # ── 4. Build release APK ─────────────────────────────────────────
-      - name: Build release APK
+      # ── 3. Installa Gradle e rigenera il wrapper ──────────────────────
+      # Il gradlew nel repo è stato generato manualmente e ha un bug nelle
+      # opzioni JVM. Lo rigeneriamo dalla distribuzione ufficiale.
+      - name: Regenerate Gradle wrapper
         run: |
+          GRADLE_VERSION=8.4
+          wget -q "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" -O gradle.zip
+          unzip -q gradle.zip
+          ./gradle-${GRADLE_VERSION}/bin/gradle wrapper --gradle-version ${GRADLE_VERSION} --distribution-type bin
           chmod +x ./gradlew
-          ./gradlew assembleRelease
+          rm -rf gradle.zip gradle-${GRADLE_VERSION}
 
-      # ── 5. Sign APK (opzionale) ───────────────────────────────────────
-      # Se i secrets non sono configurati questo passo viene saltato.
+      # ── 4. Cache Gradle ───────────────────────────────────────────────
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: gradle-
+
+      # ── 5. Build release APK ─────────────────────────────────────────
+      - name: Build release APK
+        run: ./gradlew assembleRelease --no-daemon
+
+      # ── 6. Sign APK (opzionale) ───────────────────────────────────────
       # Per abilitare la firma aggiungi questi repository secrets:
       #   KEYSTORE_BASE64  → keystore.jks in base64 (openssl base64 -in keystore.jks)
       #   KEY_ALIAS        → alias della chiave
@@ -48,7 +63,7 @@ jobs:
           STORE_PASSWORD:  ${{ secrets.STORE_PASSWORD }}
         run: |
           if [ -z "$KEYSTORE_BASE64" ]; then
-            echo "No keystore configured, skipping signing."
+            echo "Nessun keystore configurato, firma saltata."
             exit 0
           fi
           echo "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
@@ -62,7 +77,7 @@ jobs:
             app/build/outputs/apk/release/app-release-unsigned.apk
           rm -f keystore.jks
 
-      # ── 6. Trova il percorso dell'APK ────────────────────────────────
+      # ── 7. Trova il percorso dell'APK ────────────────────────────────
       - name: Locate APK
         id: apk
         run: |
@@ -74,7 +89,7 @@ jobs:
             echo "path=$UNSIGNED" >> $GITHUB_OUTPUT
           fi
 
-      # ── 7. Carica APK come artifact ───────────────────────────────────
+      # ── 8. Carica APK come artifact ───────────────────────────────────
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
@@ -82,7 +97,7 @@ jobs:
           path: ${{ steps.apk.outputs.path }}
           retention-days: 14
 
-      # ── 8. Crea GitHub Release (solo su tag v*) ───────────────────────
+      # ── 9. Crea GitHub Release (solo su tag v*) ───────────────────────
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
