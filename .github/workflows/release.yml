@@ -23,7 +23,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # ── 3. Gradle (scarica il wrapper e gestisce la cache) ────────────
+      # ── 3. Gradle ────────────────────────────────────────────────────
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v3
 
@@ -32,19 +32,23 @@ jobs:
         run: ./gradlew assembleRelease
 
       # ── 5. Sign APK (opzionale) ───────────────────────────────────────
+      # Se i secrets non sono configurati questo passo viene saltato.
       # Per abilitare la firma aggiungi questi repository secrets:
       #   KEYSTORE_BASE64  → keystore.jks in base64 (openssl base64 -in keystore.jks)
       #   KEY_ALIAS        → alias della chiave
       #   KEY_PASSWORD     → password della chiave
       #   STORE_PASSWORD   → password del keystore
       - name: Sign APK
-        if: ${{ secrets.KEYSTORE_BASE64 != null }}
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEY_ALIAS:       ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD:    ${{ secrets.KEY_PASSWORD }}
           STORE_PASSWORD:  ${{ secrets.STORE_PASSWORD }}
         run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "No keystore configured, skipping signing."
+            exit 0
+          fi
           echo "$KEYSTORE_BASE64" | base64 --decode > keystore.jks
           BUILD_TOOLS=$(ls $ANDROID_HOME/build-tools | sort -V | tail -1)
           $ANDROID_HOME/build-tools/$BUILD_TOOLS/apksigner sign \
