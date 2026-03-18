@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Rnote Viewer</string>
+    <string name="action_open">Apri file</string>
+    <string name="action_fonts">Gestisci font…</string>
+    <string name="welcome_title">Nessun file aperto</string>
+    <string name="welcome_subtitle">Apri un file .rnote per visualizzarlo</string>
+    <string name="btn_open_file">Apri file .rnote</string>
+    <string name="loading">Caricamento in corso…</string>
+    <string name="error_loading">Errore: %1$s</string>
+    <string name="title_pages">%1$d pagine</string>
+    <!-- Navigazione -->
+    <string name="page_indicator">%1$d / %2$d</string>
+    <string name="jump_title">Salta a pagina</string>
+    <string name="jump_hint">1 – %1$d</string>
+    <string name="jump_invalid">Pagina non valida (1–%1$d)</string>
+    <string name="go">Vai</string>
+    <!-- Font manager -->
+    <string name="fonts_dialog_title">Font installati</string>
+    <string name="no_fonts_installed">Nessun font installato.\nPremi + per aggiungerne uno.</string>
+    <string name="add_font">+ Aggiungi font</string>
+    <string name="close">Chiudi</string>
+    <string name="remove">Rimuovi</string>
+    <string name="cancel">Annulla</string>
+    <string name="font_remove_title">Rimuovere font?</string>
+    <string name="font_remove_msg">Rimuovere il font \"%1$s\"?</string>
+    <string name="font_removed">Font rimosso: %1$s</string>
+    <string name="font_installed">Font installato: %1$s</string>
+    <string name="font_install_error">Errore installazione font: %1$s</string>
+    <string name="font_wrong_type">Seleziona un file .ttf o .otf</string>
+</resources>

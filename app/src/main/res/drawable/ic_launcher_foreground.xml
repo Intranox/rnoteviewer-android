@@ -1,0 +1,30 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Notebook page -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,20 L70,20 L78,28 L78,88 L30,88 Z" />
+    <!-- Folded corner -->
+    <path
+        android:fillColor="#CCCCCC"
+        android:pathData="M70,20 L78,28 L70,28 Z" />
+    <!-- Pen strokes (decorative lines) -->
+    <path
+        android:strokeColor="#6200EE"
+        android:strokeWidth="3"
+        android:pathData="M38,42 Q54,38 66,44"
+        android:fillColor="#00000000" />
+    <path
+        android:strokeColor="#6200EE"
+        android:strokeWidth="3"
+        android:pathData="M38,54 Q50,58 62,52"
+        android:fillColor="#00000000" />
+    <path
+        android:strokeColor="#6200EE"
+        android:strokeWidth="3"
+        android:pathData="M38,66 L58,66"
+        android:fillColor="#00000000" />
+</vector>
